@@ -2,7 +2,7 @@ import cv2
 import glob
 
 
-def keyframe_extraction(video,frame_path):
+def keyframe_extraction(video, frame_path):
     cap = cv2.VideoCapture(video)
 
     fps = cap.get(cv2.CAP_PROP_FPS)  # 获取帧速
@@ -30,6 +30,15 @@ def keyframe_extraction(video,frame_path):
 
 def get_video(path):
     return glob.glob(path + 'train/' + '*.mp4')
+
+
+def uniform_sampling(length, nums):
+    mod = length % (nums)
+    new_length = length - mod
+    div = (length - mod) / nums
+    print(mod, div)
+    for i in range(0, new_length, int(div)):
+        yield i
 
 
 if __name__ == '__main__':
