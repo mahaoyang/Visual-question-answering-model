@@ -2,8 +2,8 @@ import cv2
 import glob
 
 
-def keyframe_extraction(path, video):
-    cap = cv2.VideoCapture(path + 'train/' + video)
+def keyframe_extraction(video):
+    cap = cv2.VideoCapture(video)
 
     fps = cap.get(cv2.CAP_PROP_FPS)  # 获取帧速
 
@@ -13,11 +13,12 @@ def keyframe_extraction(path, video):
 
     fNums = cap.get(cv2.CAP_PROP_FRAME_COUNT)
 
-    print(fps, fWidth, fHeight, fNums)
+    # print(fps, fWidth, fHeight, fNums)
 
     success, frame = cap.read()
     i = 0
     while success:
+        print('%s%s' % (video, i))
         success, arr = cv2.imencode('.jpg', frame)
         a = arr.tostring()
         fp = open(path + 'frame/' + video.split('.')[0] + str(i) + '.jpg', 'wb')
@@ -33,5 +34,5 @@ def get_video(path):
 
 if __name__ == '__main__':
     path = 'D:/spwd/VQADatasetA_20180815/'
-    # keyframe_extraction(path, 'ZJL6.mp4')
-    print(get_video(path))
+    for i in get_video(path):
+        keyframe_extraction(i)
