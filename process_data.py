@@ -1,4 +1,5 @@
 import cv2
+import glob
 
 
 def keyframe_extraction(path, video):
@@ -26,6 +27,11 @@ def keyframe_extraction(path, video):
         success, frame = cap.read()
 
 
+def get_video(path):
+    return glob.glob(path + 'train/' + '*.mp4')
+
+
 if __name__ == '__main__':
     path = 'D:/spwd/VQADatasetA_20180815/'
-    keyframe_extraction(path, 'ZJL6.mp4')
+    # keyframe_extraction(path, 'ZJL6.mp4')
+    print(get_video(path))
