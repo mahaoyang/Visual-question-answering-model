@@ -2,7 +2,7 @@ import cv2
 
 
 def keyframe_extraction(path, video):
-    cap = cv2.VideoCapture(path + 'test/' + video)
+    cap = cv2.VideoCapture(path + 'train/' + video)
 
     fps = cap.get(cv2.CAP_PROP_FPS)  # 获取帧速
 
@@ -19,7 +19,7 @@ def keyframe_extraction(path, video):
     while success:
         success, arr = cv2.imencode('.jpg', frame)
         a = arr.tostring()
-        fp = open(path + 'frame/' + str(i) + '.jpg', 'wb')
+        fp = open(path + 'frame/' + video.split('.')[0] + str(i) + '.jpg', 'wb')
         fp.write(a)
         fp.close()
         i = i + 1
