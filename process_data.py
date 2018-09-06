@@ -32,6 +32,23 @@ def get_video(path):
     return glob.glob(path + 'train/' + '*.mp4')
 
 
+def get_name_index(path):
+    files = glob.glob(path + '*.jpg')
+    indexs = []
+    lables = []
+    f_paths = []
+    for i in files:
+        file = i.split('/')[5]
+        index = file.split('.')[0].split('_')[1]
+        lable = file.split('.')[0].split('_')[1]
+        f_path = i
+        indexs.append(index)
+        lables.append(lable)
+        f_paths.append(f_path)
+    data = {'index': indexs, 'lable': lables, 'path': f_paths}
+    return data
+
+
 def uniform_sampling(length, nums):
     mod = length % (nums)
     new_length = length - mod
