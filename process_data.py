@@ -12,6 +12,8 @@ def keyframe_extraction(path, video):
 
     fNums = cap.get(cv2.CAP_PROP_FRAME_COUNT)
 
+    print(fps, fWidth, fHeight, fNums)
+
     success, frame = cap.read()
     i = 0
     while success:
