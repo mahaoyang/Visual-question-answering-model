@@ -1,6 +1,10 @@
 import cv2
 import glob
 import json
+import pickle
+import numpy as np
+import pandas as pd
+from keras.preprocessing.image import load_img, img_to_array
 
 
 def keyframe_extraction(video, frame_path):
@@ -87,6 +91,45 @@ def video2pic(path, frame_path):
         data[i.split('.')[0].split('/')[4]]['path_list'] = kf[1]
     with open('data.json', 'w') as f:
         json.dump(data, f)
+
+
+def get_img_array():
+    with open('data.json', 'r') as f:
+        data = json.load(f)
+
+    labels = []
+    sample_path = []
+    for i in data:
+        labels.append(i)
+        sample_index = data[i]['sample_index']
+        for ii in sample_index:
+            sample_path.append(ii)
+
+    sample_array = []
+    for i in sample_path:
+        pic = load_img(i, target_size=(64, 64))
+        pic = img_to_array(pic)
+        sample_array.append(pic)
+    sample_array = np.array(sample_array)
+
+    data = {'labels': labels, 'sample_array': sample_array}
+    with open('sample_array.pickle', 'wb') as f:
+        pickle.dump(data, f)
+
+
+def get_qa(path):
+    train = pd.read_csv(path + 'train.txt', sep='\n')
+    data = dict()
+    for i in train:
+        qa_slice = i.split(',')
+        label = qa_slice[0]
+        qes, ans = [], []
+        for i in range(1, len(qa_slice), 4):
+            qes.append(qa_slice[i])
+            ans.append(qa_slice[i + 1:i + 4])
+        data[i] = [qes, ans]
+    with open('qa.pickle', 'wb') as f:
+        pickle.dump(data, f)
 
 
 if __name__ == '__main__':
