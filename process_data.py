@@ -127,7 +127,7 @@ def get_qa(path):
         for i in range(1, len(qa_slice), 4):
             qes.append(qa_slice[i])
             ans.append(qa_slice[i + 1:i + 4])
-        data[i] = [qes, ans]
+        data[label] = [qes, ans]
     with open('qa.pickle', 'wb') as f:
         pickle.dump(data, f)
 
@@ -135,3 +135,4 @@ def get_qa(path):
 if __name__ == '__main__':
     path = 'D:/spwd/VQADatasetA_20180815/'
     frame_path = 'D:/spwd/VQADatasetA_20180815/frame/'
+    get_qa(path)
