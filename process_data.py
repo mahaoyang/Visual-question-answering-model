@@ -1,5 +1,6 @@
 import cv2
 import glob
+import json
 
 
 def keyframe_extraction(video, frame_path):
@@ -17,15 +18,19 @@ def keyframe_extraction(video, frame_path):
 
     success, frame = cap.read()
     i = 0
+    path_last = []
     while success:
         print('%s,%s' % (video, i))
         success, arr = cv2.imencode('.jpg', frame)
         a = arr.tostring()
-        fp = open(frame_path + video.split('.')[0].split('/')[4] + '_' + str(i) + '.jpg', 'wb')
+        path_temp = frame_path + video.split('.')[0].split('/')[4] + '_' + str(i) + '.jpg', 'wb'
+        path_last.append(path_temp[0])
+        fp = open(path_temp[0], 'wb')
         fp.write(a)
         fp.close()
         i = i + 1
         success, frame = cap.read()
+    return i, path_last
 
 
 def get_video(path):
@@ -38,9 +43,10 @@ def get_name_index(path):
     lables = []
     f_paths = []
     for i in files:
-        file = i.split('/')[5]
+        i = i.replace('\\', '/')
+        file = i.split('/')[-1]
         index = file.split('.')[0].split('_')[1]
-        lable = file.split('.')[0].split('_')[1]
+        lable = file.split('.')[0].split('_')[0]
         f_path = i
         indexs.append(index)
         lables.append(lable)
@@ -53,13 +59,30 @@ def uniform_sampling(length, nums):
     mod = length % (nums)
     new_length = length - mod
     div = (length - mod) / nums
+    div = int(div)
     print(mod, div)
-    for i in range(0, new_length, int(div)):
+    for i in range(0, new_length, div):
         yield i
 
 
 if __name__ == '__main__':
     path = 'D:/spwd/VQADatasetA_20180815/'
     frame_path = 'D:/spwd/VQADatasetA_20180815/frame/'
-    for i in get_video(path):
-        keyframe_extraction(video=i.replace('\\', '/'), frame_path=frame_path)
+    # data = dict()
+    # for i in get_video(path):
+    #     i = i.replace('\\', '/')
+    #     kf = keyframe_extraction(video=i, frame_path=frame_path)
+    #     data[i.split('.')[0].split('/')[4]] = dict()
+    #     data[i.split('.')[0].split('/')[4]]['max_index'] = kf[0]
+    #     data[i.split('.')[0].split('/')[4]]['path_list'] = kf[1]
+    # with open('data.json', 'w') as f:
+    #     json.dump(data, f)
+    with open('data.json', 'r') as f:
+        data = json.load(f)
+    for i in data:
+        max_index = data[i]['max_index']
+        data[i]['sample_index'] = []
+        for ii in uniform_sampling(max_index, 10):
+            data[i]['sample_index'].append(ii)
+    with open('data.json', 'w') as f:
+        json.dump(data, f)
