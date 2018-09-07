@@ -77,7 +77,7 @@ def sampling():
         json.dump(data, f)
 
 
-def video2pic(path,frame_path):
+def video2pic(path, frame_path):
     data = dict()
     for i in get_video(path):
         i = i.replace('\\', '/')
@@ -92,5 +92,3 @@ def video2pic(path,frame_path):
 if __name__ == '__main__':
     path = 'D:/spwd/VQADatasetA_20180815/'
     frame_path = 'D:/spwd/VQADatasetA_20180815/frame/'
-
-
