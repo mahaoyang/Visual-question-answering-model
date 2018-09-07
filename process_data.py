@@ -65,18 +65,7 @@ def uniform_sampling(length, nums):
         yield i
 
 
-if __name__ == '__main__':
-    path = 'D:/spwd/VQADatasetA_20180815/'
-    frame_path = 'D:/spwd/VQADatasetA_20180815/frame/'
-    # data = dict()
-    # for i in get_video(path):
-    #     i = i.replace('\\', '/')
-    #     kf = keyframe_extraction(video=i, frame_path=frame_path)
-    #     data[i.split('.')[0].split('/')[4]] = dict()
-    #     data[i.split('.')[0].split('/')[4]]['max_index'] = kf[0]
-    #     data[i.split('.')[0].split('/')[4]]['path_list'] = kf[1]
-    # with open('data.json', 'w') as f:
-    #     json.dump(data, f)
+def sampling():
     with open('data.json', 'r') as f:
         data = json.load(f)
     for i in data:
@@ -86,3 +75,22 @@ if __name__ == '__main__':
             data[i]['sample_index'].append(ii)
     with open('data.json', 'w') as f:
         json.dump(data, f)
+
+
+def video2pic(path,frame_path):
+    data = dict()
+    for i in get_video(path):
+        i = i.replace('\\', '/')
+        kf = keyframe_extraction(video=i, frame_path=frame_path)
+        data[i.split('.')[0].split('/')[4]] = dict()
+        data[i.split('.')[0].split('/')[4]]['max_index'] = kf[0]
+        data[i.split('.')[0].split('/')[4]]['path_list'] = kf[1]
+    with open('data.json', 'w') as f:
+        json.dump(data, f)
+
+
+if __name__ == '__main__':
+    path = 'D:/spwd/VQADatasetA_20180815/'
+    frame_path = 'D:/spwd/VQADatasetA_20180815/frame/'
+
+
