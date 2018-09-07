@@ -35,3 +35,4 @@ def vqa_model(shape=(10, 64, 64, 3)):
     video_qa_model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
     video_qa_model.summary()
     return video_qa_model
+
